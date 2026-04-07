@@ -108,16 +108,17 @@ L'étape finale où l'on vérifie si le résultat obtenu correspond au résultat
 <div style="font-size: 0.85em;">
 
 ```php
-public function test_user_can_publish_post()
+public function test_it_calculates_total_price_after_discount()
 {
-    // --- ARRANGE ---
-    $user = User::factory()->create();
-    $postData = ['title' => 'Mon Post', 'body' => 'Contenu...'];
+    // --- ARRANGE --- (N-wejdu l-khidma)
+    $price = 100;         // l-taman l-asli
+    $discount = 20;      // remise dyal 20%
+    $cart = new Cart();  // n-initializiw l-objet
 
-    // --- ACT ---
-    $response = $this->actingAs($user)->post('/posts', $postData);
+    // --- ACT --- (N-executiw l-logic)
+    $finalPrice = $cart->applyDiscount($price, $discount);
 
-    // --- ASSERT ---
-    $response->assertStatus(201);
-    $this->assertDatabaseHas('posts', ['title' => 'Mon Post']);
+    // --- ASSERT --- (N-verifyiw l-natija)
+    // 100 - 20% khass t-3tina 80
+    $this->assertEquals(80, $finalPrice);
 }
