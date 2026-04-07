@@ -27,8 +27,8 @@ style: |
     right: 60px;
   }
   .logo-header img {
-  
-  height: 110px;  }
+    height: 110px;  
+  }
   
   .dt-card {
     background: #18181b;
@@ -66,7 +66,7 @@ Le pattern **AAA** est une convention d'organisation des tests unitaires qui div
   <ul>
     <li>Séparer la préparation de l'exécution.</li>
     <li>Améliorer la lisibilité du code.</li>
-    <li>Faciliter le débogage (savoir exactement où ça fail).</li>
+    <li>Faciliter le débogage (identifier la phase qui échoue).</li>
   </ul>
 </div>
 
@@ -76,11 +76,11 @@ Le pattern **AAA** est une convention d'organisation des tests unitaires qui div
 
 C'est l'étape de configuration. On prépare tout ce qui est nécessaire pour le test.
 
-- **Actions :** Initialisation des variables, création des Models (Factories), Configuration des Mocks.
+- **Actions :** Initialisation des variables, instanciation des classes, configuration des données d'entrée.
 - **Question :** *De quoi ai-je besoin pour exécuter ce test ?*
 
 > [!NOTE]
-> C'est généralement la partie la plus longue du test.
+> C'est l'étape qui définit le contexte initial.
 
 ---
 
@@ -88,9 +88,9 @@ C'est l'étape de configuration. On prépare tout ce qui est nécessaire pour le
 
 C'est l'étape où l'on appelle la méthode ou la fonctionnalité que l'on veut tester.
 
-- **Actions :** Exécution d'une fonction, appel d'un endpoint API.
+- **Actions :** Appel d'une fonction ou d'une méthode spécifique.
 - **Règle :** Idéalement, cette étape ne doit contenir qu'**une seule ligne** de code.
-- **Question :** *Quelle est l'action que je teste ?*
+- **Question :** *Quelle est l'opération principale à tester ?*
 
 ---
 
@@ -98,27 +98,27 @@ C'est l'étape où l'on appelle la méthode ou la fonctionnalité que l'on veut 
 
 L'étape finale où l'on vérifie si le résultat obtenu correspond au résultat attendu.
 
-- **Actions :** Vérification des statuts HTTP, vérification de la base de données, comparaison de valeurs.
-- **Question :** *Est-ce que le comportement est correct ?*
+- **Actions :** Comparaison des valeurs, vérification des types de retour.
+- **Question :** *Le résultat est-il conforme aux attentes ?*
 
 ---
 
-## 🚀 Exemple concret : Laravel
+## 🚀 Exemple : Calcul de Remise (PHP)
 
 <div style="font-size: 0.85em;">
 
 ```php
 public function test_it_calculates_total_price_after_discount()
 {
-    // --- ARRANGE --- (N-wejdu l-khidma)
-    $price = 100;         // l-taman l-asli
-    $discount = 20;      // remise dyal 20%
-    $cart = new Cart();  // n-initializiw l-objet
+    // --- ARRANGE --- (Préparation des données)
+    $price = 100;
+    $discount = 20; // 20%
+    $cart = new Cart();
 
-    // --- ACT --- (N-executiw l-logic)
+    // --- ACT --- (Exécution de la logique)
     $finalPrice = $cart->applyDiscount($price, $discount);
 
-    // --- ASSERT --- (N-verifyiw l-natija)
-    // 100 - 20% khass t-3tina 80
+    // --- ASSERT --- (Vérification du résultat)
+    // On s'attend à ce que 100 - 20% soit égal à 80
     $this->assertEquals(80, $finalPrice);
 }
